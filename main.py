@@ -1,22 +1,18 @@
 from transformers import GPT2LMHeadModel, Trainer, TrainingArguments, TextDataset, DataCollatorForLanguageModeling
 from transformers import GPT2Tokenizer
 
-# Charger le modèle pré-entraîné
 model = GPT2LMHeadModel.from_pretrained("gpt2")
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-# Créez un dataset
 dataset = TextDataset(
     tokenizer=tokenizer,
     file_path="dialogue.txt",
     block_size=128
 )
 
-# Créez un DataCollator pour le masquage
 data_collator = DataCollatorForLanguageModeling(
     tokenizer=tokenizer, mlm=False
 )
 
-# Configurer les arguments d'entraînement
 training_args = TrainingArguments(
     output_dir="./gpt2-finetuned",
     overwrite_output_dir=True,
@@ -26,7 +22,6 @@ training_args = TrainingArguments(
     save_total_limit=2
 )
 
-# Initialiser le Trainer
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -34,7 +29,7 @@ trainer = Trainer(
     train_dataset=dataset
 )
 
-# Lancer l'entraînement
+
 trainer.train()
 
 input_text = "dis moi qu'a tu fais de beau hier?"
